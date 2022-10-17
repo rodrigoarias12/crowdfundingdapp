@@ -5,8 +5,8 @@ import type { BigNumber } from "ethers";
 import type { Result } from "ethers/lib/utils";
 
 import { DEBUG } from "./constants";
-import type { Crowdfactory } from "./contract-types/Crowdfactory";
-import type { Crowdfundingproject } from "./contract-types/Crowdfundingproject";
+import type { Crowdfactory } from "/typechain-types/Crowdfactory";
+import type { Crowdfundingproject } from "./typechain-types/Crowdfundingproject";
 import {
   useCrowdFactoryFunctionReader,
   useCrowdfundingProjectFunctionReader,
