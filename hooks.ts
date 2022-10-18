@@ -1,32 +1,29 @@
 import { useContract, useContractRead, useContractWrite } from "wagmi";
 
-import CROWDFACTORY_ABI from "./abis/crowdfactory.json";
-import CROWNFUNDINGPROJECT_ABI from "./abis/crowdfundingproject.json";
+import CROWDFACTORY_ABI from "/abis/crowdfactory";
+import CROWNFUNDINGPROJECT_ABI from "/abis/crowdfundingproject";
 import { FACTORY_CONTRACT_ADDRESS } from "./constants";
-import type { CrowdFactory } from "./typechain-types/CrowdFactory";
-import type { CrowdfundingProject } from "./typechain-types/CrowdfundingProject";
+import type { Crowdfactory } from "/contract-types/Crowdfactory";
+import type { Crowdfundingproject } from "/contract-types/Crowdfundingproject";
 
 /*//////////////////////////////////////////////////////////////
                               CROWD FACTORY
 //////////////////////////////////////////////////////////////*/
 
-export function useCrowdFactoryContract(): CrowdFactory {
+export function useCrowdFactoryContract(): Crowdfactory {
   const contract = useContract({
     addressOrName: FACTORY_CONTRACT_ADDRESS,
     contractInterface: CROWDFACTORY_ABI,
   });
 
-  return contract as CrowdFactory;
+  return contract as Crowdfactory;
 }
-export interface useCrowdFactoryFunctionWriterProps {
-  functionName: string;
-}
+
 // create a generic hook to access write functions of contract
-export function useCrowdFactoryFunctionWriter({
-  functionName }:useCrowdFactoryFunctionWriterProps
+export function useCrowdFactoryFunctionWriter(
+  functionName: string
 ): ReturnType<typeof useContractWrite> {
-  const contractWrite = useContractWrite({ 
-    mode: 'recklesslyUnprepared',
+  const contractWrite = useContractWrite({
     addressOrName: FACTORY_CONTRACT_ADDRESS,
     contractInterface: CROWDFACTORY_ABI,
     functionName: functionName,
@@ -61,13 +58,13 @@ export function useCrowdFactoryFunctionReader({
 
 export function useCrowdfundingProjectContract(
   contractAddress: string
-): CrowdfundingProject {
+): Crowdfundingproject {
   const contract = useContract({
     addressOrName: contractAddress,
     contractInterface: CROWNFUNDINGPROJECT_ABI,
   });
 
-  return contract as CrowdfundingProject;
+  return contract as Crowdfundingproject;
 }
 
 export interface UseCrowdfundingProjectFunctionWriterProps {
@@ -82,7 +79,6 @@ export function useCrowdfundingProjectFunctionWriter({
   typeof useContractWrite
 > {
   const contractWrite = useContractWrite({
-    mode: 'recklesslyUnprepared',
     addressOrName: contractAddress,
     contractInterface: CROWNFUNDINGPROJECT_ABI,
     functionName: functionName,

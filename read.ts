@@ -5,9 +5,8 @@ import type { BigNumber } from "ethers";
 import type { Result } from "ethers/lib/utils";
 
 import { DEBUG } from "./constants";
-import type { CrowdFactory } from "./typechain-types/CrowdFactory";
-import type { CrowdfundingProject } from "./typechain-types/CrowdfundingProject";
-
+import type { Crowdfactory } from "/typechain-types/Crowdfactory";
+import type { Crowdfundingproject } from "./typechain-types/Crowdfundingproject";
 import {
   useCrowdFactoryFunctionReader,
   useCrowdfundingProjectFunctionReader,
@@ -22,7 +21,7 @@ export function useTotalPublishedProjs(): number | undefined {
     functionName: "totalPublishedProjs",
   });
   const totalPublishedProjs:
-    | Awaited<ReturnType<CrowdFactory["totalPublishedProjs"]>>
+    | Awaited<ReturnType<Crowdfactory["totalPublishedProjs"]>>
     | Result
     | undefined = totalPublishedProjsReader.data;
 
@@ -40,7 +39,7 @@ export function usePublishedProjs(index: number): string | undefined {
     args: [index],
   });
   const publishedProjs:
-    | Awaited<ReturnType<CrowdFactory["publishedProjs"]>>
+    | Awaited<ReturnType<Crowdfactory["publishedProjs"]>>
     | Result
     | undefined = publishedProjsReader.data;
 
@@ -62,7 +61,7 @@ export function useProjTitle(contractAddress: string): string | undefined {
   });
 
   const projTitle:
-    | Awaited<ReturnType<CrowdfundingProject["projTitle"]>>
+    | Awaited<ReturnType<Crowdfundingproject["projTitle"]>>
     | Result
     | undefined = projTitleReader.data;
 
@@ -82,7 +81,7 @@ export function useProjDescription(
   });
 
   const projDescription:
-    | Awaited<ReturnType<CrowdfundingProject["projDescription"]>>
+    | Awaited<ReturnType<Crowdfundingproject["projDescription"]>>
     | Result
     | undefined = projDescriptionReader.data;
 
@@ -100,7 +99,7 @@ export function useGoalAmount(contractAddress: string): BigNumber | undefined {
   });
 
   const goalAmount:
-    | Awaited<ReturnType<CrowdfundingProject["goalAmount"]>>
+    | Awaited<ReturnType<Crowdfundingproject["goalAmount"]>>
     | Result
     | undefined = goalAmountReader.data;
 
@@ -120,7 +119,7 @@ export function useRaisedAmount(
   });
 
   const raisedAmount:
-    | Awaited<ReturnType<CrowdfundingProject["raisedAmount"]>>
+    | Awaited<ReturnType<Crowdfundingproject["raisedAmount"]>>
     | Result
     | undefined = raisedAmountReader.data;
 

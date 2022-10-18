@@ -1,5 +1,5 @@
 import { DEBUG } from "../constants";
-import type { CrowdFactory } from "../typechain-types/CrowdFactory";
+import type { Crowdfactory } from "../contract-types/Crowdfactory";
 import { useCrowdFactoryFunctionWriter } from "../hooks";
 import { toWei } from "../utils";
 import { useAddRecentTransaction } from "@rainbow-me/rainbowkit";
@@ -16,7 +16,7 @@ function CreateCampaign() {
 
   // custom hook we made in hooks.ts for writing functions
   const { writeAsync, isError } =
-    useCrowdFactoryFunctionWriter({functionName:"createProject"});
+    useCrowdFactoryFunctionWriter("createProject");
 
   // rainbow kit txn handler
   const addRecentTransaction = useAddRecentTransaction();
@@ -69,21 +69,21 @@ function CreateCampaign() {
       const amountToWei = toWei(amount);
       DEBUG && console.log("amountToWei: ", amountToWei);
 
-      const functionArgs: Parameters<CrowdFactory["createProject"]> = [
+      const functionArgs: Parameters<Crowdfactory["createProject"]> = [
         title,
         amountToWei,
         story,
         address,
       ];
-      // const tx = await writeAsync({          
-      //    // args: functionArgs,
-      // });
-      // console.log("tx >>> ", tx);
+      const tx = await writeAsync({
+        args: functionArgs,
+      });
+      console.log("tx >>> ", tx);
 
-      // addRecentTransaction({
-      //   hash: tx.hash,
-      //   description: "Create Project Transaction",
-      // });
+      addRecentTransaction({
+        hash: tx.hash,
+        description: "Create Project Transaction",
+      });
     } catch (error) {
       console.log("errror >>> ", error);
     }

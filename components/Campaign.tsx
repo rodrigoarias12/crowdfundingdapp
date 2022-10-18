@@ -61,17 +61,17 @@ function Campaign({ projectNumber }: CampaignProps) {
       const valueToWei = toWei(value);
       DEBUG && console.log("valueToWei: ", valueToWei);
 
-      // const tx = await writeAsync({
-      //   overrides: {
-      //     value: valueToWei,
-      //   },
-      // });
-      // console.log("tx >>> ", tx);
+      const tx = await writeAsync({
+        overrides: {
+          value: valueToWei,
+        },
+      });
+      console.log("tx >>> ", tx);
 
-      // addRecentTransaction({
-      //   hash: tx.hash,
-      //   description: `Donate ${value} MATIC`,
-      // });
+      addRecentTransaction({
+        hash: tx.hash,
+        description: `Donate ${value} MATIC`,
+      });
     } catch (error) {
       console.log("errror >>> ", error);
     }
