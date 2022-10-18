@@ -2,7 +2,7 @@ import { ConnectButton } from '@rainbow-me/rainbowkit';
 import type { NextPage } from 'next';
 import Head from 'next/head';
 import Campaigns from "../components/Campaigns";
-import Campaign from "../components/Campaign";
+// import Campaign from "../components/Campaign";
 import CreateCampaign from "../components/CreateCampaign";
 import { useAccount } from "wagmi";
 import { useTotalPublishedProjs } from "../read";

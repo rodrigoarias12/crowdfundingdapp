@@ -1,6 +1,6 @@
 import { DEBUG } from "../constants";
 import { useTotalPublishedProjs } from "../read";
-import Campaign from "./Campaign";
+// import Campaign from "./Campaign";
 
 function Campaigns() {
   // for testing no projects yet
@@ -26,7 +26,7 @@ function Campaigns() {
           (projectNumber: number, i) => {
             return (
               <div key={i}>
-                <Campaign projectNumber={projectNumber} />
+                {/* <Campaign projectNumber={projectNumber} /> */}
               </div>
             );
           }
