@@ -78,13 +78,13 @@ export function useCrowdfundingProjectFunctionWriter({
 }: UseCrowdfundingProjectFunctionWriterProps): ReturnType<
   typeof useContractWrite
 > {
-  const contractWrite = useContractWrite({
+  const contractWrite = useContractWrite({mode:"recklesslyUnprepared",
     addressOrName: contractAddress,
     contractInterface: CROWNFUNDINGPROJECT_ABI,
     functionName: functionName,
   });
 
-  return contractWrite;
+  return contractWrite ;
 }
 
 export interface UseCrowdfundingProjectFunctionReaderProps {

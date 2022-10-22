@@ -11,10 +11,15 @@ import { fromWei, toWei } from "../utils";
 import { useAddRecentTransaction } from "@rainbow-me/rainbowkit";
 import type { ChangeEvent, MouseEvent } from "react";
 import { useState } from "react";
+import { BigNumber } from "ethers";
+import { useContract, useContractRead, useContractWrite } from "wagmi";
 
+import CROWDFACTORY_ABI from "../abis/crowdfactory.json";
+import CROWNFUNDINGPROJECT_ABI from "../abis/crowdfundingproject.json";
+import { FACTORY_CONTRACT_ADDRESS } from "../constants";
 export type CampaignProps = { projectNumber: number };
 
-function Campaign({ projectNumber }: CampaignProps) {
+export default function Campaign({ projectNumber }: CampaignProps) {
   DEBUG && console.log("projectNumber: ", projectNumber);
 
   const [value, setValue] = useState<string>("");
@@ -36,13 +41,13 @@ function Campaign({ projectNumber }: CampaignProps) {
     });
 
   // rainbow kit txn handler
-  const addRecentTransaction = useAddRecentTransaction();
+  //const addRecentTransaction = useAddRecentTransaction();
 
   // custom hook we made in hooks.ts for writing functions
-  const { writeAsync, isError } = useCrowdfundingProjectFunctionWriter({
-    contractAddress: publishedProjsAddress || "",
-    functionName: "makeDonation",
-  });
+  // const { writeAsync, isError } = useCrowdfundingProjectFunctionWriter({
+  //   contractAddress: publishedProjsAddress || "",
+  //   functionName: "makeDonation",
+  // });
 
   const handleValue = (e: ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
@@ -60,18 +65,22 @@ function Campaign({ projectNumber }: CampaignProps) {
 
       const valueToWei = toWei(value);
       DEBUG && console.log("valueToWei: ", valueToWei);
-
-      const tx = await writeAsync({
+      const { data, isLoading, isSuccess, write } =  useContractWrite({
+        mode:"recklesslyUnprepared",
+        addressOrName: FACTORY_CONTRACT_ADDRESS,
+        contractInterface: CROWDFACTORY_ABI,
+        functionName: "makeDonation",
         overrides: {
           value: valueToWei,
         },
       });
+     const tx = write?.();
       console.log("tx >>> ", tx);
 
-      addRecentTransaction({
-        hash: tx.hash,
-        description: `Donate ${value} MATIC`,
-      });
+      // addRecentTransaction({
+      //   hash: tx.hash,
+      //   description: `Donate ${value} MATIC`,
+      // });
     } catch (error) {
       console.log("errror >>> ", error);
     }
@@ -123,14 +132,13 @@ function Campaign({ projectNumber }: CampaignProps) {
         </div>
 
         {/* if error occures display text to try again */}
-        {isError && (
+        {/* {isError && (
           <p className="text-red-500 text-xs italic">
             Error occured! Please try again!.
           </p>
-        )}
+        )} */}
       </div>
     </div>
   );
 }
 
-export default Campaign;

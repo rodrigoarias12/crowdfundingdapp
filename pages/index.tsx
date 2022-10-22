@@ -8,7 +8,7 @@ import { useAccount } from "wagmi";
 import { useTotalPublishedProjs } from "../read";
 
 function App() {
-  const { isConnected } = useAccount();
+  const { ...isConnected } = useAccount();
 
   return (
     <div className="flex flex-col items-center py-8">

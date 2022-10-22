@@ -7,6 +7,7 @@ import { alchemyProvider } from 'wagmi/providers/alchemy';
 import { publicProvider } from 'wagmi/providers/public';
 import { jsonRpcProvider } from 'wagmi/providers/jsonRpc';
 import '../styles/globals.css';
+import {useState,useEffect} from "react"
 const { chains, provider } = configureChains(
   [
     chain.polygonMumbai,
@@ -38,7 +39,13 @@ const wagmiClient = createClient({
   provider,
 });
 
+
 function MyApp({ Component, pageProps }: AppProps) {
+  const [mounted, setMounted] = useState(false)
+
+  useEffect(() => setMounted(true), [])
+  if (!mounted) return null
+
   return (
     <WagmiConfig client={wagmiClient}>
       <RainbowKitProvider chains={chains}>

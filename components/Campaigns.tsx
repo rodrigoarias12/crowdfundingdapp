@@ -7,7 +7,7 @@ function Campaigns() {
   // const totalPublishedProjs = 0;
 
   const totalPublishedProjs = useTotalPublishedProjs();
-  DEBUG &&
+  //DEBUG &&
     console.log("totalPublishedProjs: ", totalPublishedProjs?.toString());
 
   // if totalPublishedProjs not present return nothing
@@ -26,8 +26,8 @@ function Campaigns() {
           (projectNumber: number, i) => {
             return (
               <div key={i}>
-                <Campaign projectNumber={projectNumber} />
-              </div>
+                 <Campaign projectNumber={projectNumber} />
+              </div> 
             );
           }
         )}

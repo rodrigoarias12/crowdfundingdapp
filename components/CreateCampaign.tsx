@@ -75,7 +75,7 @@ function CreateCampaign() {
         story,
         address,
       ];
-      const tx = await writeAsync({
+      const tx = await writeAsync?.({
         args: functionArgs,
       });
       console.log("tx >>> ", tx);
