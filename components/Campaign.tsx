@@ -15,12 +15,13 @@ import { useContractWrite ,usePrepareContractWrite} from "wagmi";
 import CROWDFACTORY_ABI from "../abis/crowdfactory.json";
 import { FACTORY_CONTRACT_ADDRESS } from "../constants";
 export type CampaignProps = { projectNumber: number };
+import { BigNumber } from "ethers";
 
 export default function Campaign({ projectNumber }: CampaignProps) {
   DEBUG && console.log("projectNumber: ", projectNumber);
 
   const [value, setValue] = useState<string>("");
-
+  const [valuetowei, setValuetowei]=   useState<BigNumber>();
   const publishedProjsAddress = usePublishedProjs(projectNumber);
 
   const projTitle = useProjTitle(publishedProjsAddress || "");
@@ -46,7 +47,7 @@ export default function Campaign({ projectNumber }: CampaignProps) {
     contractInterface: CROWDFACTORY_ABI,
     functionName: "makeDonation",
     overrides: {
-      value: toWei(value),
+      value: valuetowei,
     },
    
   })
@@ -70,7 +71,7 @@ export default function Campaign({ projectNumber }: CampaignProps) {
 
       const valueToWei = toWei(value);
       DEBUG && console.log("valueToWei: ", valueToWei);
-    
+      setValuetowei(valueToWei);
      const tx = writeAsync?.();
       console.log("tx >>> ", tx);
 
