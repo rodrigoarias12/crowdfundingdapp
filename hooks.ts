@@ -1,10 +1,10 @@
-import { useContract, useContractRead, useContractWrite } from "wagmi";
+import { useContract, useContractRead, useContractWrite,usePrepareContractWrite } from "wagmi";
 
-import CROWDFACTORY_ABI from "/abis/crowdfactory";
-import CROWNFUNDINGPROJECT_ABI from "/abis/crowdfundingproject";
+import CROWDFACTORY_ABI from "./abis/crowdfactory.json";
+import CROWNFUNDINGPROJECT_ABI from "./abis/crowdfundingproject.json";
 import { FACTORY_CONTRACT_ADDRESS } from "./constants";
-import type { Crowdfactory } from "/contract-types/Crowdfactory";
-import type { Crowdfundingproject } from "/contract-types/Crowdfundingproject";
+import type { Crowdfactory } from "./contract-types/Crowdfactory";
+import type { Crowdfundingproject } from "./contract-types/Crowdfundingproject";
 
 /*//////////////////////////////////////////////////////////////
                               CROWD FACTORY
@@ -18,16 +18,20 @@ export function useCrowdFactoryContract(): Crowdfactory {
 
   return contract as Crowdfactory;
 }
+//config
 
 // create a generic hook to access write functions of contract
 export function useCrowdFactoryFunctionWriter(
-  functionName: string
+  functionName: string,
+  argu?: any[],
 ): ReturnType<typeof useContractWrite> {
-  const contractWrite = useContractWrite({
+  const  { config } = usePrepareContractWrite({
     addressOrName: FACTORY_CONTRACT_ADDRESS,
     contractInterface: CROWDFACTORY_ABI,
     functionName: functionName,
-  });
+    args:argu,
+  })
+  const contractWrite = useContractWrite(config);
 
   return contractWrite;
 }

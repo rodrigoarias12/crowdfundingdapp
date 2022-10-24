@@ -3,9 +3,19 @@ import type { Crowdfactory } from "../contract-types/Crowdfactory";
 import { useCrowdFactoryFunctionWriter } from "../hooks";
 import { toWei } from "../utils";
 import { useAddRecentTransaction } from "@rainbow-me/rainbowkit";
+
 import type { ChangeEvent, FormEvent } from "react";
 import { useState } from "react";
 import { useAccount } from "wagmi";
+
+//
+import { useContract, useContractRead, useContractWrite,usePrepareContractWrite } from "wagmi";
+
+import CROWDFACTORY_ABI from "../abis/crowdfactory.json";
+import CROWNFUNDINGPROJECT_ABI from "../abis/crowdfundingproject.json";
+import { FACTORY_CONTRACT_ADDRESS } from "../constants";
+import type { Crowdfundingproject } from "../contract-types/Crowdfundingproject";
+import { BigNumber } from "ethers";
 
 function CreateCampaign() {
   const [title, setTitle] = useState<string>("");
@@ -13,11 +23,25 @@ function CreateCampaign() {
   const [story, setStory] = useState<string>("");
 
   const { address } = useAccount();
+  const [amountToWei, setAmountToWei] = useState<BigNumber>();
+  
 
   // custom hook we made in hooks.ts for writing functions
-  const { writeAsync, isError } =
-    useCrowdFactoryFunctionWriter("createProject");
-
+  const functionArgs: Parameters<Crowdfactory["createProject"]> = [
+    title,
+    amountToWei!,
+    story,
+    address!,
+  ];
+  //const { writeAsync, isError,data } =  useCrowdFactoryFunctionWriter("createProject");
+  const { config } = usePrepareContractWrite({
+    addressOrName: FACTORY_CONTRACT_ADDRESS,
+    contractInterface: CROWDFACTORY_ABI,
+    functionName: "createProject",
+    args:functionArgs,
+   
+  })
+  const { writeAsync } = useContractWrite(config)
   // rainbow kit txn handler
   const addRecentTransaction = useAddRecentTransaction();
 
@@ -41,6 +65,8 @@ function CreateCampaign() {
 
     // set amount
     setAmount(value);
+    //amountToWei = toWei(amount);
+   
   };
 
   // onChange handler for story
@@ -65,25 +91,28 @@ function CreateCampaign() {
       console.log("submit!");
 
       DEBUG && console.log({ title, amount, story });
+      setAmountToWei( toWei(amount));
+      // const amountToWei = toWei(amount);
+      // DEBUG && console.log("amountToWei: ", amountToWei);
 
-      const amountToWei = toWei(amount);
-      DEBUG && console.log("amountToWei: ", amountToWei);
-
-      const functionArgs: Parameters<Crowdfactory["createProject"]> = [
-        title,
-        amountToWei,
-        story,
-        address,
-      ];
-      const tx = await writeAsync?.({
-        args: functionArgs,
-      });
+      // const functionArgs: Parameters<Crowdfactory["createProject"]> = [
+      //   title,
+      //   amountToWei,
+      //   story,
+      //   address,
+      // ];
+     
+      const tx = await writeAsync?.();
+      // This usage is not recommended. It comes with UX pitfalls. Only use it as a last resort.
+      // const tx = await writeAsync?.( {overrides: {
+      //   args:functionArgs,
+      // });
       console.log("tx >>> ", tx);
-
-      addRecentTransaction({
-        hash: tx.hash,
-        description: "Create Project Transaction",
-      });
+      
+      // addRecentTransaction({
+      //   hash: data?.hash?? " ",//change when is error
+      //   description: "Create Project Transaction",
+      // });
     } catch (error) {
       console.log("errror >>> ", error);
     }
@@ -158,11 +187,11 @@ function CreateCampaign() {
           </div>
 
           {/* if error occures display text to try again */}
-          {isError && (
+          {/* {isError && (
             <p className="text-red-500 text-xs italic">
               Error occured! Please try again!.
             </p>
-          )}
+          )} */}
         </div>
       </form>
     </>

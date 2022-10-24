@@ -11,11 +11,8 @@ import { fromWei, toWei } from "../utils";
 import { useAddRecentTransaction } from "@rainbow-me/rainbowkit";
 import type { ChangeEvent, MouseEvent } from "react";
 import { useState } from "react";
-import { BigNumber } from "ethers";
-import { useContract, useContractRead, useContractWrite } from "wagmi";
-
+import { useContractWrite ,usePrepareContractWrite} from "wagmi";
 import CROWDFACTORY_ABI from "../abis/crowdfactory.json";
-import CROWNFUNDINGPROJECT_ABI from "../abis/crowdfundingproject.json";
 import { FACTORY_CONTRACT_ADDRESS } from "../constants";
 export type CampaignProps = { projectNumber: number };
 
@@ -43,11 +40,19 @@ export default function Campaign({ projectNumber }: CampaignProps) {
   // rainbow kit txn handler
   //const addRecentTransaction = useAddRecentTransaction();
 
+    // custom hook we made in hooks.ts for writing functions
+    const { config } = usePrepareContractWrite({
+    addressOrName: FACTORY_CONTRACT_ADDRESS,
+    contractInterface: CROWDFACTORY_ABI,
+    functionName: "makeDonation",
+    overrides: {
+      value: toWei(value),
+    },
+   
+  })
+  const { writeAsync } = useContractWrite(config)
   // custom hook we made in hooks.ts for writing functions
-  // const { writeAsync, isError } = useCrowdfundingProjectFunctionWriter({
-  //   contractAddress: publishedProjsAddress || "",
-  //   functionName: "makeDonation",
-  // });
+
 
   const handleValue = (e: ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
@@ -65,16 +70,8 @@ export default function Campaign({ projectNumber }: CampaignProps) {
 
       const valueToWei = toWei(value);
       DEBUG && console.log("valueToWei: ", valueToWei);
-      const { data, isLoading, isSuccess, write } =  useContractWrite({
-        mode:"recklesslyUnprepared",
-        addressOrName: FACTORY_CONTRACT_ADDRESS,
-        contractInterface: CROWDFACTORY_ABI,
-        functionName: "makeDonation",
-        overrides: {
-          value: valueToWei,
-        },
-      });
-     const tx = write?.();
+    
+     const tx = writeAsync?.();
       console.log("tx >>> ", tx);
 
       // addRecentTransaction({
