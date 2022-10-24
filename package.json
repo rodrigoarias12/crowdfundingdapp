@@ -7,6 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
+    "prebuild":"typechain",
     "typechain": "typechain --target ethers-v5 --out-dir contract-types './abis/**/*.json'"
   },
   "dependencies": {
