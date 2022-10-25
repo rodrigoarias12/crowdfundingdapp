@@ -10,7 +10,7 @@ import { fromWei, toWei } from "../utils";
 import { useAddRecentTransaction } from "@rainbow-me/rainbowkit";
 import { ChangeEvent, MouseEvent } from "react";
 import { useState } from "react";
-import { useContractWrite ,usePrepareContractWrite} from "wagmi";
+import { useContractWrite ,usePrepareContractWrite,useWaitForTransaction } from "wagmi";
 import CROWNFUNDINGPROJECT_ABI from "../abis/crowdfundingproject.json";
 export type CampaignProps = { projectNumber: number };
 import { BigNumber } from "ethers";
@@ -55,7 +55,9 @@ export default function Campaign({ projectNumber }: CampaignProps) {
       const { writeAsync ,data} = useContractWrite(config)
 
   // custom hook we made in hooks.ts for writing functions
-
+  const { isError, isLoading } = useWaitForTransaction({
+    hash: data?.hash,
+  })
 
   const handleValue = (e: ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
@@ -132,12 +134,18 @@ export default function Campaign({ projectNumber }: CampaignProps) {
           </button>
         </div>
 
+        {/* if loading transaction */}
+        {isLoading && (
+          <p className="text-blue-500 text-xs italic">
+           Loading....
+          </p>
+        )}
         {/* if error occures display text to try again */}
-        {/* {isError && (
+        {isError && (
           <p className="text-red-500 text-xs italic">
             Error occured! Please try again!.
           </p>
-        )} */}
+        )}
       </div>
     </div>
   );
