@@ -1,5 +1,4 @@
 import { DEBUG } from "../constants";
-import { useCrowdfundingProjectFunctionWriter } from "../hooks";
 import {
   useGoalAmount,
   useProjDescription,
@@ -9,19 +8,21 @@ import {
 } from "../read";
 import { fromWei, toWei } from "../utils";
 import { useAddRecentTransaction } from "@rainbow-me/rainbowkit";
-import type { ChangeEvent, MouseEvent } from "react";
+import { ChangeEvent, MouseEvent } from "react";
 import { useState } from "react";
 import { useContractWrite ,usePrepareContractWrite} from "wagmi";
-import CROWDFACTORY_ABI from "../abis/crowdfactory.json";
-import { FACTORY_CONTRACT_ADDRESS } from "../constants";
+import CROWNFUNDINGPROJECT_ABI from "../abis/crowdfundingproject.json";
 export type CampaignProps = { projectNumber: number };
 import { BigNumber } from "ethers";
-
+import {  utils } from "ethers";
+const MINIUM_COST = '0.005'
 export default function Campaign({ projectNumber }: CampaignProps) {
   DEBUG && console.log("projectNumber: ", projectNumber);
 
-  const [value, setValue] = useState<string>("");
-  const [valuetowei, setValuetowei]=   useState<BigNumber>();
+  const [value, setValue] = useState<string>(MINIUM_COST);
+  const [valuetowei, setValuetowei]=   useState<BigNumber>(toWei(MINIUM_COST));
+  
+
   const publishedProjsAddress = usePublishedProjs(projectNumber);
 
   const projTitle = useProjTitle(publishedProjsAddress || "");
@@ -42,16 +43,17 @@ export default function Campaign({ projectNumber }: CampaignProps) {
   //const addRecentTransaction = useAddRecentTransaction();
 
     // custom hook we made in hooks.ts for writing functions
-    const { config } = usePrepareContractWrite({
-    addressOrName: FACTORY_CONTRACT_ADDRESS,
-    contractInterface: CROWDFACTORY_ABI,
-    functionName: "makeDonation",
-    overrides: {
-      value: valuetowei,
-    },
-   
-  })
-  const { writeAsync } = useContractWrite(config)
+  
+      const { config } = usePrepareContractWrite({
+        addressOrName: publishedProjsAddress || "",
+        contractInterface: CROWNFUNDINGPROJECT_ABI,
+        functionName: 'makeDonation',
+        overrides: {          
+          value: valuetowei,
+        }, 
+      })
+      const { writeAsync ,data} = useContractWrite(config)
+
   // custom hook we made in hooks.ts for writing functions
 
 
@@ -72,8 +74,9 @@ export default function Campaign({ projectNumber }: CampaignProps) {
       const valueToWei = toWei(value);
       DEBUG && console.log("valueToWei: ", valueToWei);
       setValuetowei(valueToWei);
-     const tx = writeAsync?.();
-      console.log("tx >>> ", tx);
+      const tx =await  writeAsync?.();
+ 
+      //console.log("tx >>> ", tx);
 
       // addRecentTransaction({
       //   hash: tx.hash,
