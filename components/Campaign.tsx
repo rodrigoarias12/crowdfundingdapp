@@ -40,7 +40,7 @@ export default function Campaign({ projectNumber }: CampaignProps) {
     });
 
   // rainbow kit txn handler
-  //const addRecentTransaction = useAddRecentTransaction();
+     const addRecentTransaction = useAddRecentTransaction();
 
     // custom hook we made in hooks.ts for writing functions
   
@@ -76,12 +76,12 @@ export default function Campaign({ projectNumber }: CampaignProps) {
       setValuetowei(valueToWei);
       const tx =await  writeAsync?.();
  
-      //console.log("tx >>> ", tx);
+      console.log("tx >>> ", tx);
 
-      // addRecentTransaction({
-      //   hash: tx.hash,
-      //   description: `Donate ${value} MATIC`,
-      // });
+       addRecentTransaction({
+        hash: data?.hash || "",
+        description: `Donate ${value} MATIC`,
+      });
     } catch (error) {
       console.log("errror >>> ", error);
     }
