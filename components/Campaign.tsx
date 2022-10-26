@@ -16,12 +16,15 @@ export type CampaignProps = { projectNumber: number };
 import { BigNumber } from "ethers";
 import {  utils } from "ethers";
 const MINIUM_COST = '0.005'
+import useActionWrite from "../hooks/useActionWrite";
+import useDebounce  from '../useDebounce'
+
 export default function Campaign({ projectNumber }: CampaignProps) {
   DEBUG && console.log("projectNumber: ", projectNumber);
 
-  const [value, setValue] = useState<string>(MINIUM_COST);
-  const [valuetowei, setValuetowei]=   useState<BigNumber>(toWei(MINIUM_COST));
-  
+  const [value, setValue] = useState<string>("");
+  const debouncedTokenId = useDebounce(value, 500)
+
 
   const publishedProjsAddress = usePublishedProjs(projectNumber);
 
@@ -42,23 +45,21 @@ export default function Campaign({ projectNumber }: CampaignProps) {
   // rainbow kit txn handler
      const addRecentTransaction = useAddRecentTransaction();
 
-    // custom hook we made in hooks.ts for writing functions
-  
-      const { config } = usePrepareContractWrite({
-        addressOrName: publishedProjsAddress || "",
-        contractInterface: CROWNFUNDINGPROJECT_ABI,
-        functionName: 'makeDonation',
-        overrides: {          
-          value: valuetowei,
-        }, 
-      })
-      const { writeAsync ,data} = useContractWrite(config)
+    // custom hook we made in /hooks for writing functions
+  const {writeAsync:bidAsync, isLoading:bidLoading,data,} = useActionWrite("makeDonation",publishedProjsAddress, debouncedTokenId);
 
-  // custom hook we made in hooks.ts for writing functions
-  const { isError, isLoading } = useWaitForTransaction({
+ 
+  const { isError, isLoading  } = useWaitForTransaction({
     hash: data?.hash,
+    onSuccess(ret) {
+      console.log('Success', ret)
+      addRecentTransaction({
+        hash: data?.hash || "",
+        description: `Donate ${value} MATIC`,
+      });
+    },
   })
-
+ 
   const handleValue = (e: ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
 
@@ -73,17 +74,10 @@ export default function Campaign({ projectNumber }: CampaignProps) {
     try {
       e.preventDefault();
 
-      const valueToWei = toWei(value);
-      DEBUG && console.log("valueToWei: ", valueToWei);
-      setValuetowei(valueToWei);
-      const tx =await  writeAsync?.();
+      const tx =await  bidAsync?.();
  
       console.log("tx >>> ", tx);
 
-       addRecentTransaction({
-        hash: data?.hash || "",
-        description: `Donate ${value} MATIC`,
-      });
     } catch (error) {
       console.log("errror >>> ", error);
     }
