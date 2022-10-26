@@ -8,6 +8,8 @@ import { publicProvider } from 'wagmi/providers/public';
 import { jsonRpcProvider } from 'wagmi/providers/jsonRpc';
 import '../styles/globals.css';
 import {useState,useEffect} from "react"
+import { Analytics } from '@vercel/analytics/react';
+
 const { chains, provider } = configureChains(
   [
     chain.polygonMumbai,
@@ -50,7 +52,7 @@ function MyApp({ Component, pageProps }: AppProps) {
     <WagmiConfig client={wagmiClient}>
       <RainbowKitProvider showRecentTransactions={true} chains={chains}>
         <Component {...pageProps} />
-        
+        <Analytics />
       </RainbowKitProvider>
     </WagmiConfig>
   );

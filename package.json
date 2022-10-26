@@ -7,11 +7,12 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "prebuild":"typechain --target ethers-v5 --out-dir contract-types './abis/**/*.json'",
+    "prebuild": "typechain --target ethers-v5 --out-dir contract-types './abis/**/*.json'",
     "typechain": "typechain --target ethers-v5 --out-dir contract-types './abis/**/*.json'"
   },
   "dependencies": {
     "@rainbow-me/rainbowkit": "^0.7.1",
+    "@vercel/analytics": "^0.1.1",
     "dotenv": "^16.0.3",
     "ethers": "^5.0.0",
     "next": "^12.3.1",
