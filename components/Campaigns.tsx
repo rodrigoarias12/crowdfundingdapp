@@ -4,10 +4,10 @@ import Campaign from "./Campaign";
 import { useEffect } from "react";
 function Campaigns() {
   const totalPublishedProjs = useTotalPublishedProjs();
-  //DEBUG &&
-  // console.log("totalPublishedProjs: ", totalPublishedProjs?.toString());
+ 
   useEffect(() => {
-    console.log("totalPublishedProjs: ", totalPublishedProjs?.toString());
+  //DEBUG &&
+   console.log("totalPublishedProjs: ", totalPublishedProjs?.toString());
   }, [totalPublishedProjs])
 
   // if totalPublishedProjs not present return nothing
