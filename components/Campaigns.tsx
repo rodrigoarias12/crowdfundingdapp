@@ -1,14 +1,14 @@
 import { DEBUG } from "../constants";
 import { useTotalPublishedProjs } from "../read";
 import Campaign from "./Campaign";
-
+import { useEffect } from "react";
 function Campaigns() {
-  // for testing no projects yet
-  // const totalPublishedProjs = 0;
-
   const totalPublishedProjs = useTotalPublishedProjs();
   //DEBUG &&
+  // console.log("totalPublishedProjs: ", totalPublishedProjs?.toString());
+  useEffect(() => {
     console.log("totalPublishedProjs: ", totalPublishedProjs?.toString());
+  }, [totalPublishedProjs])
 
   // if totalPublishedProjs not present return nothing
   if (!totalPublishedProjs) {
@@ -26,8 +26,8 @@ function Campaigns() {
           (projectNumber: number, i) => {
             return (
               <div key={i}>
-                 <Campaign projectNumber={projectNumber} />
-              </div> 
+                <Campaign projectNumber={projectNumber} />
+              </div>
             );
           }
         )}
