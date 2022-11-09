@@ -4,13 +4,13 @@
 import type { BigNumber } from "ethers";
 import type { Result } from "ethers/lib/utils";
 
-import { DEBUG } from "./constants";
-import type { Crowdfactory } from "./contract-types/Crowdfactory";
-import type { Crowdfundingproject } from "./contract-types/Crowdfundingproject";
+import { DEBUG } from "../constants";
+import type { Crowdfactory } from "../contract-types/Crowdfactory";
+import type { Crowdfundingproject } from "../contract-types/Crowdfundingproject";
 import {
   useCrowdFactoryFunctionReader,
   useCrowdfundingProjectFunctionReader,
-} from "./hooks";
+} from "../hooks/hooks";
 
 /*//////////////////////////////////////////////////////////////
                               CROWD FACTORY

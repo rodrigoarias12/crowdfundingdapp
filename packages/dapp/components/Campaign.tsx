@@ -5,8 +5,8 @@ import {
   useProjTitle,
   usePublishedProjs,
   useRaisedAmount,
-} from "../read";
-import { fromWei, toWei } from "../utils";
+} from "../service/read";
+import { fromWei, toWei } from "../utils/utils";
 import { useAddRecentTransaction } from "@rainbow-me/rainbowkit";
 import { ChangeEvent, MouseEvent } from "react";
 import { useState } from "react";
@@ -17,7 +17,7 @@ import { BigNumber } from "ethers";
 import {  utils } from "ethers";
 const MINIUM_COST = '0.005'
 import useActionWrite from "../hooks/useActionWrite";
-import useDebounce  from '../useDebounce'
+import useDebounce  from '../utils/useDebounce'
 
 export default function Campaign({ projectNumber }: CampaignProps) {
   DEBUG && console.log("projectNumber: ", projectNumber);

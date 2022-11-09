@@ -1,9 +1,9 @@
 import { useContract, useContractRead, useContractWrite,usePrepareContractWrite } from "wagmi";
 
-import CROWDFACTORY_ABI from "./abis/crowdfactory.json";
-import CROWNFUNDINGPROJECT_ABI from "./abis/crowdfundingproject.json";
-import type { Crowdfactory } from "./contract-types/Crowdfactory";
-import type { Crowdfundingproject } from "./contract-types/Crowdfundingproject";
+import CROWDFACTORY_ABI from "../abis/crowdfactory.json";
+import CROWNFUNDINGPROJECT_ABI from "../abis/crowdfundingproject.json";
+import type { Crowdfactory } from "../contract-types/Crowdfactory";
+import type { Crowdfundingproject } from "../contract-types/Crowdfundingproject";
 
 /*//////////////////////////////////////////////////////////////
                               CROWD FACTORY

@@ -1,5 +1,5 @@
 import { DEBUG } from "../constants";
-import { useTotalPublishedProjs } from "../read";
+import { useTotalPublishedProjs } from "../service/read";
 import Campaign from "./Campaign";
 import { useEffect } from "react";
 function Campaigns() {
