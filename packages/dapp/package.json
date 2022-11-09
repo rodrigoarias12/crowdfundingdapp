@@ -26,6 +26,7 @@
   "devDependencies": {
     "@types/node": "18.11.9",
     "@types/react": "18.0.24",
+    "@typechain/ethers-v5": "^10.1.0",
     "autoprefixer": "^10.4.12",
     "eslint": "^8.15.0",
     "eslint-config-next": "^12.1.6",
