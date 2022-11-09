@@ -4,9 +4,11 @@
  require("dotenv").config();
  require("@nomiclabs/hardhat-ethers");
  require("@nomiclabs/hardhat-etherscan");
- 
+ require("@nomicfoundation/hardhat-toolbox");
+
+
  module.exports = {
-   solidity: "0.8.15",
+   solidity: "0.8.17",
    defaultNetwork: "mumbai",
    networks: {
      hardhat: {},
@@ -22,6 +24,8 @@
        polygonMumbai: process.env.POLYGONSCAN_API_KEY || "",
      },
    },
+  typechain: {
+    outDir: "../dapp/typechain-types",
+    target: "ethers-v5",
+  },
  };
-
- export {};

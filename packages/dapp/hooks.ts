@@ -2,13 +2,13 @@ import { useContract, useContractRead, useContractWrite,usePrepareContractWrite 
 
 import CROWDFACTORY_ABI from "./abis/crowdfactory.json";
 import CROWNFUNDINGPROJECT_ABI from "./abis/crowdfundingproject.json";
-import { FACTORY_CONTRACT_ADDRESS } from "./constants";
 import type { Crowdfactory } from "./contract-types/Crowdfactory";
 import type { Crowdfundingproject } from "./contract-types/Crowdfundingproject";
 
 /*//////////////////////////////////////////////////////////////
                               CROWD FACTORY
 //////////////////////////////////////////////////////////////*/
+export const FACTORY_CONTRACT_ADDRESS = "0x8A3D3a2b17eD94D7e23fCecc51912451f65982F9";
 
 export function useCrowdFactoryContract(): Crowdfactory {
   const contract = useContract({
